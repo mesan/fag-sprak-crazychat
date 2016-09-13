@@ -17,7 +17,7 @@ def crazychat():
   chatStream.on_next(request.json)
   return HTTPResponse(status = 418)
 
-print('Starting server on localhost:{} ...'.format(port))
+print('Starting server on 0.0.0.0:{} ...'.format(port))
 Thread(target=lambda: run(host='0.0.0.0', port=port, quiet=True)).start()
 
 
