@@ -2,12 +2,22 @@
 
 $stderr = File.new("stderr.log", 'w')
 
-require "sinatra"
-require "sinatra/reloader"
-require "json"
+require 'sinatra/base'
+require 'sinatra/reloader'
+require 'json'
+require 'logger'
 
-post '/chat' do
-  data = JSON.parse(request.body.read)
-  puts data
-  'Hello, world!'
+class MyApp < Sinatra::Base
+  register Sinatra::Reloader
+
+  def initialize(app=nil, foobar="hei")
+    super(app)
+    @foobar = foobar
+  end
+
+  post '/chat' do
+    @foobar
+  end
+
+  run!
 end
