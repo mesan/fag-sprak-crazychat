@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+$stderr = File.new("stderr.log", 'w')
+
 require "sinatra"
 require "sinatra/reloader"
 require "json"
