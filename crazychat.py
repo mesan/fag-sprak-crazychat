@@ -5,6 +5,7 @@ import http.client
 import json
 import sys
 
+
 chatStream = Subject()
 recipients = set([]) 
 returnAddress = sys.argv[1]
@@ -17,12 +18,13 @@ def crazychat():
   return HTTPResponse(status = 418)
 
 print('Starting server on localhost:{} ...'.format(port))
-Thread(target=lambda: run(host='localhost', port=port, quiet=True)).start()
+Thread(target=lambda: run(host='0.0.0.0', port=port, quiet=True)).start()
 
 
 def handleChatMessage(message):
   if message['returnAddress'] not in recipients: 
     recipients.add(message['returnAddress'])
+    print('{} connected to your crazychat'.format(message['username']))
   else: 
     print('{}: {}'.format(message['username'], message['message']))
 
