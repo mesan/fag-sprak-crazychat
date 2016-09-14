@@ -8,9 +8,17 @@ require 'json'
 require 'logger'
 
 class CrazyChat
+  def initialize
+    @users = {}
+  end
+
   def handle_message(body)
     username = body['username']
     message = body['message']
+    address = body['address']
+
+    @users[username] = address
+
     puts "<#{username}> #{message}"
   end
 end
