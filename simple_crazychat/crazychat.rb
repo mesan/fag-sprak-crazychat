@@ -7,17 +7,23 @@ require 'sinatra/reloader'
 require 'json'
 require 'logger'
 
+class CrazyChat
+  def handle_message(body)
+    username = body['username']
+    message = body['message']
+    puts "<#{username}> #{message}"
+  end
+end
+
 class MyApp < Sinatra::Base
   register Sinatra::Reloader
 
-  def initialize(app=nil, foobar="hei")
-    super(app)
-    @foobar = foobar
-  end
-
   post '/chat' do
-    @foobar
+    message = JSON.parse(request.body.read)
+    settings.chat.handle_message(message)
+    200
   end
-
-  run!
 end
+
+MyApp.set :chat, CrazyChat.new
+MyApp.run!
