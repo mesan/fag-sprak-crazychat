@@ -13,4 +13,5 @@ open class CrazyChat {
                     .run(*args)
         }
     }
+
 }

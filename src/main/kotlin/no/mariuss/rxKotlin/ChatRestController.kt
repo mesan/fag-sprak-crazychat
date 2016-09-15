@@ -1,9 +1,11 @@
 package no.mariuss.rxKotlin
 
-import no.mariuss.rxKotlin.domain.ChatService
+import no.mariuss.rxKotlin.domain.MessageEvent
+import no.mariuss.rxKotlin.service.ChatService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.context.request.async.DeferredResult
 
 
 @CrossOrigin(origins = arrayOf("*"))
@@ -17,16 +19,10 @@ class ChatRestController @Autowired constructor(val chatService: ChatService) {
     fun receiveMessage(
             @PathVariable nickName: String,
             @PathVariable basePath: String,
-            @RequestBody message: String): DeferredResult<Boolean> {
+            @RequestBody message: String): ResponseEntity<Unit> {
 
-        val result: DeferredResult<Boolean> = DeferredResult(180000)
-
-        chatService.receiveMessage(nickName, basePath, message)
-                .doOnError { result.setErrorResult(it) }
-                .doOnCompleted { result.setResult(false) }
-                .subscribe { result.setResult(it) }
-
-        return result
+        chatService.receiveMessage(MessageEvent(nickName, basePath, message))
+        return ResponseEntity<Unit>(HttpStatus.CREATED)
 
     }
 
