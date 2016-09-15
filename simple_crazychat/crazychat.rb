@@ -71,7 +71,7 @@ loop do
   next if input.empty?
 
   case input
-  when /^:add (\w+) (.+)/
+  when /^:add (\S+) (.+)/
     chat_client.add_user($1, $2)
   when /^:users/
     p chat_client.users
