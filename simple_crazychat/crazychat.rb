@@ -55,7 +55,7 @@ class MyApp < Sinatra::Base
   end
 end
 
-$stderr = File.new("stderr-#$$.log", 'w')
+$stderr = File.new("stderr-#$$.log", 'w') unless $VERBOSE
 
 MyApp.set :chat_client, chat_client
 MyApp.set :port, my_port.to_i
