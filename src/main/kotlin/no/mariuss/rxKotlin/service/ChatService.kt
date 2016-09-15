@@ -12,7 +12,7 @@ class ChatService {
 
     private val subject = PublishSubject<MessageEvent>()
 
-    val messages: Observable<MessageEvent> = subject.subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+    val messages: Observable<MessageEvent> = subject.observeOn(Schedulers.from(Executors.newCachedThreadPool()))
 
     fun receiveMessage(event: MessageEvent) {
         subject.onNext(event)
