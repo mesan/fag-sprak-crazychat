@@ -8,8 +8,8 @@ my_address, my_port, my_name = ARGV
 raise "Oppgi addresse, portnummer og navn!" unless my_address && my_port && my_name 
 
 class CrazyChat
-  def initialize(address, port, name, users={})
-    @address = address
+  def initialize(address, name, users={})
+    @return_address = address
     @name = name
     @users = users
   end
@@ -34,14 +34,14 @@ class CrazyChat
       puts "Sender til #{name} (#{address})..."
       RestClient.post "http://#{address}", {"message" => message,
                                             "username" => @name,
-                                            "returnAddress" => "http://#@address:#@port"}
+                                            "returnAddress" => @return_address}
       exit
 
     end
   end
 end
 
-chat_client = CrazyChat.new(my_address, my_port.to_i, my_name)
+chat_client = CrazyChat.new("http://#{my_address}:#{my_port}", my_name)
 
 class MyApp < Sinatra::Base
   register Sinatra::Reloader
