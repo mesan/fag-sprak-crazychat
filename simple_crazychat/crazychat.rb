@@ -30,7 +30,6 @@ class CrazyChat
   end
 
   def send_message(message)
-    puts "SEND!"
     @users.each do |name, address|
       puts "Sender til #{name} (#{address})..."
       RestClient.post "http://#{address}", {"message" => message,
