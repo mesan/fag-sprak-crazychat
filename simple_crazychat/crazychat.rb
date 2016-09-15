@@ -56,20 +56,18 @@ MyApp.set :chat_client, chat_client
 MyApp.set :port, my_port.to_i
 server_thread = Thread.new { MyApp.run! }
 
-Thread.new do
-  loop do
-    print "> "
-    input = $stdin.gets&.chomp
+loop do
+  print "> "
+  input = $stdin.gets&.chomp
 
-    exit unless input
-    next if input.empty?
+  exit unless input
+  next if input.empty?
 
-    case input
-    when /^:add (\w+) (.+)/
-      chat_client.add_user($1, $2)
-    else
-      chat_client.send_message(input)
-    end
+  case input
+  when /^:add (\w+) (.+)/
+    chat_client.add_user($1, $2)
+  else
+    chat_client.send_message(input)
   end
 end
 
