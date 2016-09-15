@@ -2,7 +2,6 @@
 
 require 'sinatra/base'
 require 'sinatra/reloader'
-require 'json'
 require 'rest-client'
 
 my_address, my_port, my_name = ARGV
@@ -49,8 +48,7 @@ class MyApp < Sinatra::Base
   register Sinatra::Reloader
 
   post '/' do
-    message = JSON.parse(request.body.read)
-    settings.chat_client.handle_message(message)
+    settings.chat_client.handle_message(request.params)
     200
   end
 end
