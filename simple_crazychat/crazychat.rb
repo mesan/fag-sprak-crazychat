@@ -35,8 +35,6 @@ class CrazyChat
       RestClient.post "http://#{address}", {"message" => message,
                                             "username" => @name,
                                             "returnAddress" => @return_address}
-      exit
-
     end
   end
 end
