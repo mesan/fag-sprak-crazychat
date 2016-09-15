@@ -32,10 +32,16 @@ class CrazyChat
 
   def send_message(message)
     @users.each do |name, address|
-      puts "Sender til #{name} (#{address})..."
-      RestClient.post "http://#{address}", {"message" => message,
-                                            "username" => @name,
-                                            "returnAddress" => @return_address}
+      Thread.new do
+        begin
+          puts "Sender til #{name} (#{address})..."
+          RestClient.post address, {"message" => message,
+                                    "username" => @name,
+                                    "returnAddress" => @return_address}
+        rescue => e
+          puts "feil: #{e}"
+        end
+      end
     end
   end
 end
