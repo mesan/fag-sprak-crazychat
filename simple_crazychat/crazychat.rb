@@ -61,7 +61,10 @@ server_thread = Thread.new { MyApp.run! }
 Thread.new do
   loop do
     print "> "
-    input = $stdin.gets.chomp
+    input = $stdin.gets&.chomp
+
+    exit unless input
+    next if input.empty?
 
     case input
     when /^:add (\w+) (.+)/
