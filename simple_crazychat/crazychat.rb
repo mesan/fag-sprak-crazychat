@@ -8,6 +8,8 @@ my_address, my_port, my_name = ARGV
 raise "Oppgi addresse, portnummer og navn!" unless my_address && my_port && my_name 
 
 class CrazyChat
+  attr_reader :users
+
   def initialize(address, name, users={})
     @return_address = address
     @name = name
@@ -16,7 +18,6 @@ class CrazyChat
 
   def add_user(username, address)
     @users[username] = address
-    p @users
   end
 
   def handle_message(body)
@@ -66,6 +67,8 @@ loop do
   case input
   when /^:add (\w+) (.+)/
     chat_client.add_user($1, $2)
+  when /^:users/
+    p chat_client.users
   else
     chat_client.send_message(input)
   end
