@@ -17,7 +17,7 @@ class CrazyChat
   end
 
   def add_user(username, address)
-    @users[username] = address
+    @users[address] = username
   end
 
   def handle_message(body)
@@ -31,10 +31,10 @@ class CrazyChat
   end
 
   def send_message(message)
-    @users.each do |name, address|
+    @users.each do |address, name|
       Thread.new do
         begin
-          puts "Sender til #{name} (#{address})..."
+          $stderr.puts "Sender til #{name} (#{address})..."
           RestClient.post address, {"message" => message,
                                     "username" => @name,
                                     "returnAddress" => @return_address}
