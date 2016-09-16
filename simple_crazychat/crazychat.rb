@@ -35,7 +35,6 @@ class CrazyChat
     @users.each do |address, name|
       Thread.new do
         begin
-          $stderr.puts "Sender til #{name} (#{address})..."
           payload = {
             message: message,
             username: @name,
