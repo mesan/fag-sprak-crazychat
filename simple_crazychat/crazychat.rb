@@ -36,9 +36,12 @@ class CrazyChat
       Thread.new do
         begin
           $stderr.puts "Sender til #{name} (#{address})..."
-          RestClient.post address, {"message" => message,
-                                    "username" => @name,
-                                    "returnAddress" => @return_address}
+          payload = {
+            message: message,
+            username: @name,
+            returnAddress: @return_address
+          }
+          RestClient.post address, payload.to_json, {content_type: :json}
         rescue => e
           puts "feil: #{e}"
         end
