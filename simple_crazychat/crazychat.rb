@@ -61,7 +61,7 @@ $stderr = File.new("stderr-#$$.log", 'w') unless $VERBOSE
 
 MyApp.set :chat_client, chat_client
 MyApp.set :port, my_port.to_i
-server_thread = Thread.new { MyApp.run! }
+Thread.new { MyApp.run! }
 
 loop do
   print "> "
@@ -79,5 +79,3 @@ loop do
     chat_client.send_message(input)
   end
 end
-
-server_thread.join
