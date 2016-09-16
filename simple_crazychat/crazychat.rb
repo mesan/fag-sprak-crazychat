@@ -3,6 +3,7 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'rest-client'
+require 'json'
 
 my_address, my_port, my_name = ARGV
 raise "Oppgi addresse, portnummer og navn!" unless my_address && my_port && my_name 
@@ -52,8 +53,14 @@ class MyApp < Sinatra::Base
   register Sinatra::Reloader
 
   post '/' do
-    settings.chat_client.handle_message(request.params)
-    200
+    begin
+      body = request.body.read
+      json = JSON.parse(body)
+      settings.chat_client.handle_message(json)
+      200
+    rescue
+      400
+    end
   end
 end
 
