@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
-
 require "crazychat"
 
 address, port, name = *ARGV
 raise "Oppgi addresse, portnummer og navn!" unless address && port && name 
 
-$stderr = File.new("stderr-#{$$}.log", 'w')
+$stderr = File.new(File::NULL, 'w')
 
 CrazyChat.start(address, port.to_i, name)
