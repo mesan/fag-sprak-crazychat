@@ -1,39 +1,67 @@
 # Crazychat
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/crazychat`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+TODO: Write something clever here :)
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Clone this Git repository and checkout the `ruby` branch.
 
-```ruby
-gem 'crazychat'
-```
+Make sure [Ruby](https://www.ruby-lang.org/en/) is installed -- preferably the 
+[latest version](https://www.ruby-lang.org/en/downloads/).
 
-And then execute:
+#### Install [Bundler](http://bundler.io/)
+
+    $ gem install bundler
+
+#### Install project dependencies
 
     $ bundle
 
-Or install it yourself as:
+##  Executable
 
-    $ gem install crazychat
+You can create an executable Ruby gem from the source in this repository and 
+install in it on your path:
+
+    $ bundle exec rake install
+
+Then, the `crazychat` command should be available anywhere in you shell.
+
+    $ crazychat
+
+Otherwise, you can run CrazyChat locally with the executable found in this 
+directory
+
+    $ ./crazychat
+
+### Running
+
+The executable takes three arguments:
+
+* Your return address
+* A port number
+* Your nickname
+
+#### Examples
+
+    $ ./crazychat localhost 1337 CrazyChatBoi98
+    $ ./crazychat vg.no 80 spambot
 
 ## Usage
 
-TODO: Write usage instructions here
+To exit CrazyChat, enter a blank line and press `Ctrl+D`.
+
+To enter a command, start a new line with a colon `:`
+
+* `:add <name> <address>` -- adds `<name>` to your users list with the given `<address>`
+* `:users` shows your user list
+
+Anything else you type inn will be sent to your contacts when you press enter.
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/crazychat.
-
 
 ## License
 
