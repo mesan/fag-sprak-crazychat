@@ -9,6 +9,8 @@ module CrazyChat
       next if input.empty?
 
       case input
+      when /^:exit$/
+        exit
       when /^:add (\S+) (.+)/
         chat_client.add_user($1, $2)
       when /^:users/
