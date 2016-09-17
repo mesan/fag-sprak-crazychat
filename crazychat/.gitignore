@@ -1,3 +1,6 @@
+/.rvmrc
+
+# Bundler stuff:
 /.bundle/
 /.yardoc
 /Gemfile.lock
