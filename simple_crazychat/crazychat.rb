@@ -21,11 +21,7 @@ class CrazyChat
     @users[address] = username
   end
 
-  def handle_message(body)
-    username = body['username']
-    message = body['message']
-    address = body['returnAddress']
-
+  def handle_message(username, address, message)
     add_user(username, address)
 
     puts "<#{username}> #{message}"
@@ -57,8 +53,10 @@ class MyApp < Sinatra::Base
   post '/' do
     begin
       body = request.body.read
-      json = JSON.parse(body)
-      settings.chat_client.handle_message(json)
+      json = JSON.parse(body, symbolize_names: true)
+      username, address, message = json.values_at(:username, :returnAddress, :message)
+
+      settings.chat_client.handle_message(username, address, message)
       200
     rescue
       400
