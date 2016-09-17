@@ -5,7 +5,7 @@ require 'crazychat/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "crazychat"
-  spec.version       = Crazychat::VERSION
+  spec.version       = CrazyChat::VERSION
   spec.authors       = ["Daniel Rødskog"]
   spec.email         = ["danielr@mesan.no"]
 
