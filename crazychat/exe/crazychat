@@ -1,11 +1,10 @@
 #!/usr/bin/env ruby
 
-require "sinatra"
-require "sinatra/reloader"
+require "crazychat"
 
-post '/' do
-  'Hello, world!'
-end
+address, port, name = *ARGV
+raise "Oppgi addresse, portnummer og navn!" unless address && port && name 
 
+$stderr = File.new("stderr-#{$$}.log", 'w')
 
-
+CrazyChat.start(address, port.to_i, name)
