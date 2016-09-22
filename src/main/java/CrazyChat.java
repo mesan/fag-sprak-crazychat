@@ -1,3 +1,5 @@
+import org.apache.log4j.BasicConfigurator;
+
 /**
  * Created by philiph on 22-Sep-16.
  */
