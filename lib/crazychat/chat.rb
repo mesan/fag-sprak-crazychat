@@ -17,7 +17,7 @@ module CrazyChat
     def handle_message(username, address, message)
       add_user(username, address)
 
-      puts "<#{username}> #{message}"
+      puts "<#{username}> #{message}" if message
     end
 
     def send_message(message)
