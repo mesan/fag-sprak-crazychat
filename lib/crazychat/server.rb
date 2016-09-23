@@ -13,7 +13,7 @@ module CrazyChat
         username, address, message = json.values_at(:username, :returnAddress, :message)
 
         settings.chat_client.handle_message(username, address, message)
-        200 # OK
+        204 # OK
       rescue
         400 # Bad request
       end
