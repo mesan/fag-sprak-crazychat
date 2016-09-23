@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Daniel Rødskog"]
   spec.email         = ["danielr@mesan.no"]
 
-  spec.summary       = %q{foo}
-  spec.description   = %q{bar}
-  spec.homepage      = "http://mesan.no"
+  spec.summary       = "Ruby implementation of CrazyChat"
+  spec.description   = "This a a Ruby implementation of the CrazyChat protocol"
+  spec.homepage      = "https://github.com/mesan/fag-sprak-crazychat/tree/ruby"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
