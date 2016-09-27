@@ -5,6 +5,7 @@
  */
 public class CrazyChat {
     public static void main(String[] args){
-        new ChatClient();
+
+        new ChatClient(args);
     }
 }
