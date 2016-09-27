@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -13,11 +14,13 @@ func ListenForMessages(port string, callback MessageCallback) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
 			http.Error(w, "Unknown method", http.StatusMethodNotAllowed)
+			log.Println("Unknown method")
 			return
 		}
 
 		if r.Header.Get("Content-Type") != "application/json" {
 			http.Error(w, "Unsupported media type", http.StatusUnsupportedMediaType)
+			log.Println("Unsupported media type")
 			return
 		}
 
@@ -25,6 +28,7 @@ func ListenForMessages(port string, callback MessageCallback) {
 		err := json.NewDecoder(r.Body).Decode(&msg)
 		if err != nil {
 			http.Error(w, "Invalid JSON", http.StatusBadRequest)
+			log.Println("Invalid JSON")
 			return
 		}
 

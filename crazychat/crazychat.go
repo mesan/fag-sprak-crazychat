@@ -8,15 +8,15 @@ import (
 )
 
 type App struct {
-	host       string
-	port       string
-	username   string
-	otherUsers map[string]string
+	returnAddress string
+	port          string
+	username      string
+	otherUsers    map[string]string
 }
 
-func New(host, port, username string) *App {
+func New(returnAddress, port, username string) *App {
 	return &App{
-		host,
+		returnAddress,
 		port,
 		username,
 		make(map[string]string),
@@ -38,7 +38,7 @@ func (app *App) handleInput(input string) {
 		msg := Message{
 			input,
 			app.username,
-			app.host + ":" + app.port,
+			app.returnAddress,
 		}
 		app.handleOutgoingMessage(msg)
 		return
@@ -53,7 +53,7 @@ func (app *App) handleInput(input string) {
 	}
 	if fields[0] == ":list" && len(fields) == 1 {
 		for address, name := range app.otherUsers {
-			fmt.Printf("%s (%s)\n", name, address)
+			fmt.Printf("  %s %s\n", address, name)
 		}
 		return
 	}
@@ -66,9 +66,9 @@ func (app *App) handleIncomingMessage(msg Message) {
 }
 
 func (app *App) handleOutgoingMessage(msg Message) {
-	fmt.Printf("%s (%s) >> %s\n", app.username, app.host+":"+app.port, msg.Message)
+	fmt.Printf("%s (%s) >> %s\n", app.username, app.returnAddress, msg.Message)
 	for address := range app.otherUsers {
-		SendMessage(msg, address)
+		go SendMessage(msg, address)
 	}
 }
 

@@ -10,7 +10,7 @@ import (
 func main() {
 	// First arg is executed command
 	if len(os.Args) != 4 {
-		fmt.Println("Usage: crazychat <host> <port> <username>")
+		fmt.Println("Usage: crazychat <returnAddress> <port> <username>")
 		return
 	}
 
