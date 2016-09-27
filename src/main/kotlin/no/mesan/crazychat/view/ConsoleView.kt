@@ -9,6 +9,7 @@ class ConsoleView constructor(val chatBroker: ChatBroker) {
             .mergeWith(chatBroker.outgoingMessages)
 
     val userName: String by lazy { readLine() ?: "" }
+    val returnAddress: String by lazy { readLine() ?: "" }
 
     init {
         Thread {
@@ -17,6 +18,8 @@ class ConsoleView constructor(val chatBroker: ChatBroker) {
             println("---------------------")
             print("Enter username: ")
             userName // This initializes userName.
+            print("Enter location: ")
+            returnAddress
             messages.subscribe(this::printMessage)
             chatLoop()
         }.start()
@@ -32,7 +35,7 @@ class ConsoleView constructor(val chatBroker: ChatBroker) {
             print("$ ")
             val message = readLine() ?: ""
             print("\b\r")
-            chatBroker.sendMessage(MessageEvent(userName, "localhost:8080", message))
+            chatBroker.sendMessage(MessageEvent(userName, returnAddress, message))
         }
     }
 
