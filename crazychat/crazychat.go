@@ -62,11 +62,11 @@ func (app *App) handleInput(input string) {
 
 func (app *App) handleIncomingMessage(msg Message) {
 	app.otherUsers[msg.ReturnAddress] = msg.Username
-	fmt.Printf("%s (%s) << %s\n", msg.Username, msg.ReturnAddress, msg.Message)
+	fmt.Printf(ColGreen + "%s (%s) << %s\n" + ColReset, msg.Username, msg.ReturnAddress, msg.Message)
 }
 
 func (app *App) handleOutgoingMessage(msg Message) {
-	fmt.Printf("%s (%s) >> %s\n", app.username, app.returnAddress, msg.Message)
+	fmt.Printf(ColCyan + "%s (%s) >> %s\n" + ColReset, app.username, app.returnAddress, msg.Message)
 	for address := range app.otherUsers {
 		go SendMessage(msg, address)
 	}

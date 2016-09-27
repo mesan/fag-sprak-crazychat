@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -15,13 +14,13 @@ func ListenForMessages(port string, callback MessageCallback) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
 			http.Error(w, "Unknown method", http.StatusMethodNotAllowed)
-			log.Printf("Unknown method %s\n", r.Method)
+			fmt.Printf(ColRed + "Unknown method %s\n" + ColReset, r.Method)
 			return
 		}
 
 		if !strings.HasPrefix(r.Header.Get("Content-Type"), "application/json") {
 			http.Error(w, "Unsupported media type", http.StatusUnsupportedMediaType)
-			log.Printf("Unsupported media type %s\n", r.Header.Get("Content-Type"))
+			fmt.Printf(ColRed + "Unsupported media type %s\n" + ColReset, r.Header.Get("Content-Type"))
 			return
 		}
 
@@ -29,7 +28,7 @@ func ListenForMessages(port string, callback MessageCallback) {
 		err := json.NewDecoder(r.Body).Decode(&msg)
 		if err != nil {
 			http.Error(w, "Invalid JSON", http.StatusBadRequest)
-			log.Println("Invalid JSON")
+			fmt.Printf(ColRed + "Invalid JSON\n" + ColReset)
 			return
 		}
 
@@ -45,6 +44,6 @@ func SendMessage(msg Message, address string) {
 	json.NewEncoder(&buf).Encode(msg)
 	_, err := http.Post(address, "application/json", &buf)
 	if err != nil {
-		log.Println(err)
+		fmt.Println(ColRed + err.Error() + ColReset)
 	}
 }
