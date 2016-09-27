@@ -45,17 +45,21 @@ public class ChatClient {
         startClient();
     }
     public void handle_msg(Request req){
+        System.out.println("start av handle_msg");
         JSONObject jsonObject = null;
-
         try {
             JSONParser parser = new JSONParser();
             jsonObject = (JSONObject) parser.parse(req.body());
+            System.out.println("input: " + jsonObject);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        if(jsonObject.containsKey("returnAddress")) {
-            receivers.add((String) jsonObject.get("returnAddress"));
+        if(jsonObject.containsKey("returnAddress")){
+            String retAddr = (String) jsonObject.get("returnAddress");
+            if (!receivers.contains(retAddr)){
+                receivers.add(retAddr);
+            }
         }
         else {
             System.err.println("JSON did not include field returnAddress");
@@ -69,8 +73,6 @@ public class ChatClient {
         Scanner scanner = new Scanner(System.in);
         while (true){
             String input = scanner.next();
-//            System.out.println("melding inn: "+input+"\n");
-
             sendMessage(formatMessage(input));
         }
     }
@@ -91,10 +93,12 @@ public class ChatClient {
             body = new StringEntity(obj.toJSONString());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         for (String rec: receivers){
-            System.out.println(rec);
+            System.out.println("prøver å sende til " + rec);
             HttpPost pm = new HttpPost(rec);
             pm.setEntity(body);
             try {
