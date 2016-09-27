@@ -5,6 +5,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static spark.Spark.*;
 
@@ -37,5 +38,12 @@ public class ChatClient {
         System.out.println("Message from "
                 + (String) jsonObject.get("username")
                 + ": "  + jsonObject.get("message"));
+    }
+    private void startClient() {
+        Scanner scanner = new Scanner(System.in);
+        while (true){
+            String input = scanner.next();
+            System.out.println("melding inn: "+input+"\n");
+        }
     }
 }
