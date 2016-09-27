@@ -42,5 +42,8 @@ func ListenForMessages(port string, callback MessageCallback) {
 func SendMessage(msg Message, address string) {
 	buf := bytes.Buffer{}
 	json.NewEncoder(&buf).Encode(msg)
-	http.Post("http://"+address, "application/json", &buf)
+	_, err := http.Post(address, "application/json", &buf)
+	if err != nil {
+		log.Println(err)
+	}
 }
