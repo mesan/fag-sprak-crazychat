@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type MessageCallback func(Message)
@@ -14,13 +15,13 @@ func ListenForMessages(port string, callback MessageCallback) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
 			http.Error(w, "Unknown method", http.StatusMethodNotAllowed)
-			log.Println("Unknown method")
+			log.Printf("Unknown method %s\n", r.Method)
 			return
 		}
 
-		if r.Header.Get("Content-Type") != "application/json" {
+		if !strings.HasPrefix(r.Header.Get("Content-Type"), "application/json") {
 			http.Error(w, "Unsupported media type", http.StatusUnsupportedMediaType)
-			log.Println("Unsupported media type")
+			log.Printf("Unsupported media type %s\n", r.Header.Get("Content-Type"))
 			return
 		}
 
