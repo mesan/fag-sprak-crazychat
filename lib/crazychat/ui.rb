@@ -1,3 +1,5 @@
+require 'pp'
+
 module CrazyChat
 
   def self.input_loop(chat_client)
@@ -14,7 +16,7 @@ module CrazyChat
       when /^:add (\S+) (.+)/
         chat_client.add_user($1, $2)
       when /^:users/
-        p chat_client.users
+        pp chat_client.users
       else
         chat_client.send_message(input)
       end
