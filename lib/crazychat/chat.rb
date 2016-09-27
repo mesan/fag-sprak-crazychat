@@ -1,4 +1,5 @@
 require 'rest-client'
+require 'crazychat/error'
 
 module CrazyChat
   class Chat
@@ -15,9 +16,14 @@ module CrazyChat
     end
 
     def handle_message(username, address, message)
+      validate(address)
       add_user(username, address)
 
       puts "<#{username}> #{message}" if message
+    end
+
+    def validate(return_address)
+      raise CrazyChatError.new, 'returnAddress missing' unless return_address
     end
 
     def send_message(message)

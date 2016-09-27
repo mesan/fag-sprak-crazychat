@@ -1,3 +1,4 @@
+require 'crazychat/error'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'json'
@@ -14,8 +15,8 @@ module CrazyChat
 
         settings.chat_client.handle_message(username, address, message)
         204 # OK
-      rescue
-        400 # Bad request
+      rescue CrazyChatError => e
+        [400, e.message]
       end
     end
   end
