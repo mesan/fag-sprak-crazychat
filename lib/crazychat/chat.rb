@@ -29,7 +29,7 @@ module CrazyChat
                         returnAddress: @return_address }
             RestClient.post address, payload.to_json, {content_type: :json}
           rescue => e
-            puts "feil: #{e}"
+            puts "(#{name}) feil: #{e}"
           end
         end
       end
