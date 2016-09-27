@@ -1,4 +1,3 @@
-//import javafx.util.Callback;
 import rx.subjects.PublishSubject;
 import spark.Request;
 
@@ -14,5 +13,7 @@ public class ChatClient {
         System.out.println(req);
 
         System.out.println("body " + req.body());
+
+
     }
 }
