@@ -18,7 +18,7 @@ class ChatRestController @Autowired constructor(val chatService: ChatBroker) {
             @RequestBody event: MessageEvent): ResponseEntity<Unit> {
 
         chatService.receiveMessage(event)
-        return ResponseEntity<Unit>(HttpStatus.CREATED)
+        return ResponseEntity(HttpStatus.CREATED)
 
     }
 

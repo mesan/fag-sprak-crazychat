@@ -4,61 +4,84 @@ import no.mesan.crazychat.ChatBroker
 import no.mesan.crazychat.ConnectionManager
 import no.mesan.crazychat.domain.MessageEvent
 import rx.Observable
+import rx.schedulers.Schedulers
 import rx.swing.sources.KeyEventSource
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.event.KeyEvent
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
+import java.util.concurrent.Executors
 import javax.swing.*
+import javax.swing.text.DefaultCaret
 
-class ChatView(val chatBroker: ChatBroker, val connectionManager: ConnectionManager) : JFrame("CrazyChat") {
+class ChatView(val chatBroker: ChatBroker, connectionManager: ConnectionManager) : JFrame("CrazyChat") {
 
     val messages: Observable<MessageEvent> =
             chatBroker.incomingMessages
                     .mergeWith(chatBroker.outgoingMessages)
 
+    private val connections = connectionManager.connections
+
+    private val actionScheduler = Schedulers.from(Executors.newCachedThreadPool())
+
     val chat = JTextArea().apply {
-        minimumSize = Dimension(450, 450)
         isEditable = false
+        (caret as DefaultCaret).updatePolicy = DefaultCaret.ALWAYS_UPDATE
+        text =
+                """                                ---------------------------
+                                ---- Welcome to CrazyChat! ----
+                                ---------------------------
+"""
     }
 
-    val chatLine = JTextField().apply {
-        maximumSize = Dimension(450, 50)
+    val inputLine = JTextField().apply {
+        minimumSize = Dimension(450, 40)
         isEditable = true
     }
 
-    val username: String = JOptionPane.showInputDialog(null, "Username: ", "Log in", JOptionPane.QUESTION_MESSAGE)
-    val basePath: String = JOptionPane.showInputDialog(null, "Base path: ", "Location", JOptionPane.QUESTION_MESSAGE)
+    val username: String = JOptionPane.showInputDialog(null, "Username: ", "Log in", JOptionPane.QUESTION_MESSAGE).apply { this ?: exit() }
+    val returnAddress: String = JOptionPane.showInputDialog(null, "Return address: ", "Location", JOptionPane.QUESTION_MESSAGE).apply { this ?: exit() }
 
     init {
         messages.filter { it.message.isNotBlank() }
                 .subscribe(this::printMessage)
 
         minimumSize = Dimension(500, 500)
+        isResizable = false
 
-        val layout = BorderLayout(0, 0).apply {
+        val layout = BorderLayout().apply {
             add(JScrollPane(chat), BorderLayout.CENTER)
-            add(chatLine, BorderLayout.SOUTH)
+            add(inputLine, BorderLayout.SOUTH)
             isVisible = true
         }
 
         add(JPanel(layout))
 
-        val keyObs = KeyEventSource.fromKeyEventsOf(chatLine)
+        val keyObs = KeyEventSource.fromKeyEventsOf(inputLine)
+                .observeOn(actionScheduler)
                 .filter { it.keyCode == KeyEvent.VK_ENTER }
-                .map { chatLine.text }
+                .map { inputLine.text.trim() }
                 .filter { it.isNotBlank() }
                 .share()
 
-        keyObs.forEach { chatLine.text = "" }
+        keyObs.forEach { inputLine.text = "" }
 
         keyObs.filter { !it.startsWith(":") }
                 .subscribe(this::sendMessage)
 
         keyObs.filter { it.startsWith(":") }
-                .map { it.drop(1) }
+                .map { it.drop(1).split("\\s+".toRegex()) }
                 .subscribe(this::handleCommand)
 
+        addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(e: WindowEvent) {
+                exit()
+            }
+        })
+
         pack()
+        repaint()
         isVisible = true
     }
 
@@ -66,23 +89,44 @@ class ChatView(val chatBroker: ChatBroker, val connectionManager: ConnectionMana
         chat.append("${event.username}: ${event.message}\n")
     }
 
-    fun handleCommand(command: String) {
+    fun handleCommand(commandList: List<String>) {
+        val command = commandList[0]
+        val arguments = commandList.drop(1)
+
         when (command) {
-            "users" -> run {
-                if (connectionManager.connections.isEmpty()) chat.append("No users connected.\n")
-                else chat.append("Users: ${connectionManager.connections}\n")
-            }
-            "connect" -> connectNewUser()
+            "users" -> listConnectedUsers()
+            "connect" -> connectNewUser(arguments)
+            "clear" -> chat.text = ""
             else -> chat.append("Unknown command: $command\n")
         }
     }
 
     fun sendMessage(message: String) {
-        chatBroker.sendMessage(MessageEvent(username, basePath, message))
+        chatBroker.sendMessage(MessageEvent(username, returnAddress, message))
     }
 
-    private fun connectNewUser() {
-        throw UnsupportedOperationException("not implemented")
+    fun listConnectedUsers() {
+        if(connections.isEmpty()) {
+            chat.append("No users connected.\n")
+        } else {
+            chat.append("\nUsers:\n${connections.map { (it.username ?: "<no name>") + " -> ${it.returnAddress}\n"}}\n")
+        }
+
+        chat.append(if (connections.isEmpty()) "No users connected.\n" else "Users: $connections\n")
+    }
+
+    fun connectNewUser(arguments: List<String>) {
+        if (arguments.size != 1) {
+            chat.append("Unknown arguments to :connect -> ${arguments.fold("") { prev, it -> prev + " " + it }}\n")
+            chat.append("Usage: :connect <ip-address>\n")
+            return
+        }
+
+        chatBroker.sendPrivateMessage(arguments[0], MessageEvent(username, returnAddress, ""))
+    }
+
+    private fun exit() {
+        chatBroker.exit()
     }
 
 }

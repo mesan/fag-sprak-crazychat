@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean
 
 @SpringBootApplication
 open class CrazyChat {
+
     companion object {
         @JvmStatic fun main(args: Array<String>) {
             SpringApplicationBuilder(CrazyChat::class.java)

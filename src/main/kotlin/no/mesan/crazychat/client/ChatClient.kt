@@ -31,10 +31,13 @@ class ChatClient @Autowired constructor(val connectionManager: ConnectionManager
                             .rx_response()
                             .map { connection.returnAddress to it.first }
                 }
-                .subscribe {
+                .subscribe({
                     val (address, response) = it
                     println("$address: ${response.httpStatusCode} ${response.httpResponseMessage}")
-                }
+                }, {
+                    println("Could not connect: $event")
+                    it.printStackTrace(System.err)
+                })
     }
 
 }

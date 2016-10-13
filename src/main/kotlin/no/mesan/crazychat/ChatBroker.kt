@@ -26,4 +26,14 @@ class ChatBroker {
         outSubject.onNext(event)
     }
 
+    fun sendPrivateMessage(toAddress: String, event: MessageEvent) {
+        outSubject.onNext(event.copy(toAddress = toAddress))
+    }
+
+    fun exit() {
+        inSubject.onCompleted()
+        outSubject.onCompleted()
+        System.exit(0)
+    }
+
 }
