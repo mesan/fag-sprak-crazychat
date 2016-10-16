@@ -1,6 +1,6 @@
-package crazychat
+package rx
 
-//go:generate gorx --import=github.com/mesan/fag-sprak-crazychat/crazychat -o rx/rx.go rx crazychat.Message
+//go:generate gorx -o rx.go rx Message
 
 type Message struct {
 	Message       string `json:"message"`
