@@ -1,7 +1,7 @@
-import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import rx.Observable;
 import rx.subjects.PublishSubject;
 import spark.Request;
 import org.json.simple.JSONObject;
@@ -9,11 +9,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.apache.http.client.methods.*;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -40,11 +38,11 @@ public class ChatClient {
         }
         PublishSubject<Request> subject = PublishSubject.create();
         subject.subscribe(this::handle_msg);
-        post("/hello", (req,res) -> {subject.onNext(req); return "soiudjflkdsf";});
+        post("/hello", (req,res) -> {subject.onNext(req); return "krzy";});
 
         startClient();
     }
-    public void handle_msg(Request req){
+    private void handle_msg(Request req){
         System.out.println("start av handle_msg");
         JSONObject jsonObject = null;
         try {
@@ -70,11 +68,19 @@ public class ChatClient {
                 + ": "  + jsonObject.get("message"));
     }
     private void startClient() {
-        Scanner scanner = new Scanner(System.in);
-        while (true){
-            String input = scanner.next();
-            sendMessage(formatMessage(input));
-        }
+        Observable<String> observable = Observable.create(subscriber -> {
+            try (BufferedReader reader = new BufferedReader( new InputStreamReader(System.in))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    subscriber.onNext(line);
+                }
+                //subscriber.onCompleted();
+
+            } catch (Exception e) {
+                subscriber.onError(e);
+            }
+        });
+        observable.subscribe(x -> sendMessage(formatMessage(x)));
     }
 
     private JSONObject formatMessage(String input){
@@ -106,6 +112,8 @@ public class ChatClient {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            pm.releaseConnection();
+            System.out.println("Har sendt til " + rec);
         }
     }
 }
