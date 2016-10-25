@@ -1,7 +1,9 @@
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import spark.Request;
 import org.json.simple.JSONObject;
@@ -26,11 +28,9 @@ public class ChatClient {
 
     public ChatClient(String[] args){
         client = HttpClientBuilder.create().build();
-        try {
-            address = "http://" + Inet4Address.getLocalHost().getHostAddress() + ":4567/hello";
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+
+        System.out.print("Specify port: ");
+        int inputPort = new Scanner(System.in).nextInt();
 
         name = args[0];
         for (int i = 1; i < args.length; i++){
@@ -38,17 +38,22 @@ public class ChatClient {
         }
         PublishSubject<Request> subject = PublishSubject.create();
         subject.subscribe(this::handle_msg);
+        port(inputPort);
         post("/hello", (req,res) -> {subject.onNext(req); return "krzy";});
+
+        try {
+            address = "http://" + Inet4Address.getLocalHost().getHostAddress() + ":" + inputPort + "/hello";
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         startClient();
     }
     private void handle_msg(Request req){
-        System.out.println("start av handle_msg");
         JSONObject jsonObject = null;
         try {
             JSONParser parser = new JSONParser();
             jsonObject = (JSONObject) parser.parse(req.body());
-            System.out.println("input: " + jsonObject);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -93,27 +98,25 @@ public class ChatClient {
     }
 
     private void sendMessage(JSONObject obj) {
-        StringEntity body = null;
-
         try {
-            body = new StringEntity(obj.toJSONString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            final StringEntity body = new StringEntity(obj.toJSONString());
+            Observable.from(receivers).subscribeOn(Schedulers.newThread()).subscribe(rec -> sendToReceiver(rec, body));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        for (String rec: receivers){
-            System.out.println("prøver å sende til " + rec);
-            HttpPost pm = new HttpPost(rec);
-            pm.setEntity(body);
-            try {
-                client.execute(pm);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            pm.releaseConnection();
-            System.out.println("Har sendt til " + rec);
+    private void sendToReceiver(String rec, StringEntity body){
+
+        System.out.println("sendtorec");
+        System.out.println(Thread.currentThread().getName());
+        HttpPost pm = new HttpPost(rec);
+        pm.setEntity(body);
+        try {
+            client.execute(pm);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        pm.releaseConnection();
     }
 }
