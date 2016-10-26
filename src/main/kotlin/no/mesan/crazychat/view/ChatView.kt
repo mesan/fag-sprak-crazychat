@@ -111,8 +111,6 @@ class ChatView(val chatBroker: ChatBroker, connectionManager: ConnectionManager)
         } else {
             chat.append("\nUsers:\n${connections.map { (it.username ?: "<no name>") + " -> ${it.returnAddress}\n"}}\n")
         }
-
-        chat.append(if (connections.isEmpty()) "No users connected.\n" else "Users: $connections\n")
     }
 
     fun connectNewUser(arguments: List<String>) {
