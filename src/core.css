@@ -76,7 +76,8 @@ textarea {
 }
 
 .message-username {
-    flex: 0 0 12rem;
+    flex: 0 0 auto;
+    max-width: 12rem;
     margin-top: 0.5rem;
     overflow: hidden;
     text-overflow: ellipsis;
