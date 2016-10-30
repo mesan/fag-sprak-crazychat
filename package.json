@@ -23,6 +23,7 @@
     "handlebars-loader": "^1.4.0",
     "html-loader": "^0.4.4",
     "rx": "^4.1.0",
-    "webpack": "^1.13.3"
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
   }
 }
