@@ -1,10 +1,10 @@
 import Rx from 'rx'
 
-export default WsConn
+export default CrazyWs
 
 const createMessage = (type, data) => JSON.stringify(data ? {type, data} : {type})
 
-function WsConn(username) {
+function CrazyWs(username) {
     const messageSubject = new Rx.Subject()
 
     const socket = new WebSocket(`ws://${location.host}/ws`)
