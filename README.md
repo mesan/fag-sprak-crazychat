@@ -27,5 +27,5 @@ const socket = new WebSocket('ws.//localhost:1337/test')
 ### Install dependencies and start development server
 1. Open a terminal in the frontend project folder
 2. `npm install`
-3. `webpack-dev-server --progress --colors`
+3. `node_modules/.bin/webpack-dev-server --progress --colors`
 4. Open your browser and go to http://localhost:8080/websocket-dev-server/
