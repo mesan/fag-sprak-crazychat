@@ -1,0 +1,28 @@
+{
+  "name": "crazychat",
+  "version": "1.0.0",
+  "description": "A different chat app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mesan/fag-sprak-crazychat.git"
+  },
+  "author": "Knut Nekså",
+  "bugs": {
+    "url": "https://github.com/mesan/fag-sprak-crazychat/issues"
+  },
+  "homepage": "https://github.com/mesan/fag-sprak-crazychat#readme",
+  "devDependencies": {
+    "babel-core": "^6.18.0",
+    "babel-loader": "^6.2.7",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0",
+    "file-loader": "^0.9.0",
+    "handlebars": "^4.0.5",
+    "handlebars-loader": "^1.4.0",
+    "html-loader": "^0.4.4",
+    "rx": "^4.1.0",
+    "webpack": "^1.13.3"
+  }
+}

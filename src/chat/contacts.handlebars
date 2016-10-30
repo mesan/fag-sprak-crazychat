@@ -1,0 +1,23 @@
+<div class="chat-message">
+    <div class="message-username">Server</div>
+    <div class="arrow-left"><div></div></div>
+    <div class="message-content contacts-content">
+        {{#if title}}
+            <div class="contacts-title">{{title}}</div>
+        {{/if}}
+        <table>
+            <thead>
+            <tr>
+                <th>Username</th> <th>Address</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each contacts}}
+                <tr>
+                    <td>{{this.username}}</td><td>{{this.address}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

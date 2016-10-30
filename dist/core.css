@@ -1,0 +1,147 @@
+body, html {
+    height: 100%;
+}
+
+body, html, textarea {
+    font-family: 'Special Elite', sans-serif !important;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+textarea {
+    border-radius: 0 !important;
+}
+
+.chat-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    margin: 5rem 0;
+    text-align: center;
+}
+
+.chat {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    padding: 1rem;
+    margin: 0 auto;
+    height: 100%;
+    width: calc(100% - 2rem);
+    overflow-y: auto;
+}
+
+.separator {
+    border-top: thin solid lightgrey;
+    margin-bottom: 3rem;
+}
+
+.chat-input {
+    resize: none;
+    height: 11rem;
+    margin-bottom: 5rem;
+}
+
+.chat-message {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.me.chat-message {
+    flex-direction: row-reverse;
+}
+
+.message-content {
+    background: rgb(224, 247, 255);
+    border: thin solid lightblue;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 1rem;
+    font-family: inherit;
+    margin: 0;
+    white-space: normal;
+}
+
+.me .message-content {
+    background: #efefef;
+    border: thin solid lightgrey;
+}
+
+.message-username {
+    flex: 0 0 12rem;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    margin-right: 0.5rem;
+}
+
+.me .message-username {
+    margin-right: 0;
+    margin-left: 0.5rem;
+    text-align: left;
+}
+
+.arrow-left {
+    margin-right:-1px;
+    margin-top: 1rem;
+    width: 0;
+    height: 0;
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
+    border-right: 0.5rem solid lightblue;
+
+}
+
+.me .arrow-left {
+    border-right: 0.5rem solid lightgrey;
+    transform: scaleX(-1);
+    margin-right:0;
+    margin-left:-1px;
+}
+
+.arrow-left > div {
+    position: relative;
+    top: calc(1px - 0.5rem);
+    left: 1px;
+    width: 0;
+    height: 0;
+    border-top: calc(0.5rem - 1px) solid transparent;
+    border-bottom: calc(0.5rem - 1px) solid transparent;
+    border-right: calc(0.5rem - 1px) solid rgb(224, 247, 255);
+}
+
+.me .arrow-left > div {
+    border-right: calc(0.5rem - 1px) solid #efefef;
+}
+
+.contacts-content.message-content {
+}
+
+.contacts-content td, .contacts-content th {
+    padding: 0.3rem 1rem;
+    border-bottom: none;
+}
+
+.contacts-title {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 1rem;
+}
+
+.contacts-content table {
+    margin-bottom: 0;
+}
+
+.contacts-content h5 {
+    padding: 0;
+    margin: 0;
+}
