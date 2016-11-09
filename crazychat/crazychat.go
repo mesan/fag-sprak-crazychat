@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/mesan/fag-sprak-crazychat/crazychat/color"
 	"github.com/mesan/fag-sprak-crazychat/crazychat/rx"
 )
 
@@ -105,11 +106,11 @@ func (app *App) addContact(name string, address string) {
 }
 
 func (app *App) printIncomingMessage(msg rx.Message) {
-	fmt.Printf(ColGreen+"%s %s << %s\n"+ColReset, msg.ReturnAddress, msg.Username, msg.Message)
+	fmt.Printf(color.Green+"%s %s << %s\n"+color.Reset, msg.ReturnAddress, msg.Username, msg.Message)
 }
 
 func (app *App) printOutgoingMessage(msg rx.Message) {
-	fmt.Printf(ColCyan+"%s %s >> %s\n"+ColReset, app.returnAddress, app.username, msg.Message)
+	fmt.Printf(color.Cyan+"%s %s >> %s\n"+color.Reset, app.returnAddress, app.username, msg.Message)
 }
 
 func printWelcome() {
